@@ -2,8 +2,8 @@ package com.betsson.interviewtest.commom.data.local
 
 import com.betsson.interviewtest.commom.data.dto.BetDTO
 
-class BetDataSourceImpl : BetDataSource {
-    override fun getBets(): List<BetDTO> {
+class BetDataSourceMockImpl : BetDataSource {
+    override suspend fun getBets(): List<BetDTO> {
         val bets = mutableListOf<BetDTO>()
         bets.add(
             BetDTO(

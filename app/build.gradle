@@ -44,8 +44,7 @@ dependencies {
     //endregion
 
     //region Test Libraries dependencies
-    testImplementation androidTestDependencies.junit
-    androidTestImplementation androidTestDependencies.androidJunit
-    androidTestImplementation androidTestDependencies.androidexpresso
+    testImplementation testDependencies.values()
+    androidTestImplementation androidTestDependencies.values()
     //endregion
 }

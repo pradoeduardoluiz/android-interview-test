@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply from: "../dependencies.gradle"
 android {
     namespace 'com.betsson.interviewtest.commom'
     compileSdk 33
@@ -32,10 +33,18 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    //region Project dependencies
+    //endregion
+
+    implementation 'org.slf4j:slf4j-api:2.0.5'
+    implementation 'org.slf4j:log4j-over-slf4j:2.0.0-alpha1'
+
+    //region Libraries dependencies
+    implementation androidxDependencies.values()
+    implementation koinDependencies.values()
+    //endregion
+
+    //region Test Libraries dependencies
+    implementation testDependencies.values()
+    //endregion
 }

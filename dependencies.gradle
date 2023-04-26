@@ -3,9 +3,11 @@ ext {
     versions = [
             "androidxcore"       : "1.9.0",
             "androidappcompat"   : "1.6.0",
+            "corountines"        : "1.6.3",
             "material"           : "1.8.0",
             "constraintlayout"   : "2.1.4",
             "junit"              : "4.13.2",
+            "coreTesting"        : "2.0.0",
             "androidtest"        : "1.1.5",
             "androidtestexpresso": "3.5.1",
             "koin"               : "3.3.2",
@@ -21,13 +23,22 @@ ext {
             "constraintlayout": "androidx.constraintlayout:constraintlayout:$versions.constraintlayout",
     ]
 
+    kotlinDependencies = [
+            "coroutines": "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.corountines",
+    ]
+
     koinDependencies = [
             "koin": "io.insert-koin:koin-android:$versions.koin"
     ]
 
+    testDependencies = [
+            "junit"             : "junit:junit:$versions.junit",
+            "mockk"             : "io.mockk:mockk:$versions.mockk",
+            "coreTesting"       : "androidx.arch.core:core-testing:$versions.coreTesting",
+            "corountinesTesting": "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.corountines",
+    ]
+
     androidTestDependencies = [
-            "junit"          : "junit:junit:$versions.junit",
-            "mockk"          : "io.mockk:mockk:$versions.mockk",
             "androidJunit"   : "androidx.test.ext:junit:$versions.androidtest",
             "androidexpresso": "androidx.test.espresso:espresso-core:$versions.androidtestexpresso",
     ]
