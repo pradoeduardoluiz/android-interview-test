@@ -16,6 +16,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@id/calculate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <include layout="@layout/layout_shimmer" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/calculate"
         android:layout_width="match_parent"
