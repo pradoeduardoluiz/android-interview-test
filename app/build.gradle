@@ -31,11 +31,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
 
     //region Project dependencies
+    implementation project(":commom")
     //endregion
 
     //region Libraries dependencies

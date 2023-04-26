@@ -8,9 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BetViewModel(
-    private val getBetsUseCase: GetBetsUseCase
+    private val getBetsUseCase: GetBetsUseCase,
+    private val initialState: BetState
 ) : ViewModel(), BetContract.ViewModel {
-    private val mutableState = MutableStateFlow(BetState())
+    private val mutableState = MutableStateFlow(initialState)
     override val state: StateFlow<BetState> = mutableState
 
     override fun getBets() {
@@ -27,7 +28,7 @@ class BetViewModel(
                 }
                 .onFailure {
                     updateState {
-                        copy(isLoading = false,)
+                        copy(isLoading = false)
                     }
                 }
         }
