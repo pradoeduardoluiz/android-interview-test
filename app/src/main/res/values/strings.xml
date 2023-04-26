@@ -2,4 +2,5 @@
     <string name="app_name">InterviewTest</string>
     <string name="label_sell_in">Sell in: </string>
     <string name="label_odds">Odds: </string>
+    <string name="action_calculate">Calculate</string>
 </resources>

@@ -37,11 +37,18 @@ class BetsFragment : Fragment(R.layout.fragment_bets) {
         viewModel.getBets()
         bindAdapter()
         bindOutputs()
+        bindInputs()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun bindInputs() {
+        binding.calculate.setOnClickListener {
+            viewModel.calculateOdds()
+        }
     }
 
     private fun bindAdapter() {

@@ -11,6 +11,7 @@ val presentationModule = module {
     viewModel {
         BetViewModel(
             getBetsUseCase = get(),
+            calculateOddsUseCase = get(),
             initialState = BetState()
         )
     }

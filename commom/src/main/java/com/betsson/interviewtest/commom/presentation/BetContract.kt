@@ -7,5 +7,6 @@ interface BetContract {
         val state: StateFlow<BetState>
 
         fun getBets()
+        fun calculateOdds()
     }
 }
