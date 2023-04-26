@@ -4,6 +4,7 @@ import android.app.Application
 import com.betsson.interviewtest.commom.data.di.dataModule
 import com.betsson.interviewtest.commom.domain.di.domainModule
 import com.betsson.interviewtest.commom.presentation.di.presentationModule
+import com.betsson.interviewtest.di.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -20,5 +21,5 @@ class BetApplication : Application() {
         }
     }
 
-    private val modules = listOf(presentationModule, dataModule, domainModule)
+    private val modules = listOf(appModules, presentationModule, dataModule, domainModule)
 }

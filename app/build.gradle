@@ -34,6 +34,10 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/*")
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -44,6 +48,7 @@ dependencies {
 
     //region Libraries dependencies
     implementation androidxDependencies.values()
+    implementation thirdPartiesDependencies.values()
     implementation koinDependencies.values()
     //endregion
 

@@ -1,9 +1,9 @@
-package com.betsson.interviewtest
+package com.betsson.interviewtest.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import com.betsson.interviewtest.Bet
+import com.betsson.interviewtest.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,9 +12,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        findViewById<RecyclerView>(R.id.recycler_view).adapter = ItemAdapter(getItemsFromNetwork())
-        findViewById<RecyclerView>(R.id.recycler_view).layoutManager = LinearLayoutManager(this)
     }
 
     // for the scope of this exercise, we will just return a hardcoded list of items,
