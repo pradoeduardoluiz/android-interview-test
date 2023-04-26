@@ -7,6 +7,6 @@ class GetBetsUseCaseImpl(
     private val repository: BetRepository
 ) : GetBetsUseCase {
     override suspend fun invoke(): List<BetModel> {
-        return repository.getBets()
+        return repository.getBets().sortedBy { it.sellIn }
     }
 }

@@ -5,9 +5,9 @@ data class BetState(
     val bets: List<BetViewData> = emptyList()
 ) {
     data class BetViewData(
-        var type: String,
-        var sellIn: Int,
-        var odds: Int,
-        var image: String
+        val type: String,
+        val sellIn: Int,
+        val odds: Int,
+        val image: String
     )
 }

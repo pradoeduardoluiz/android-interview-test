@@ -1,8 +1,8 @@
 package com.betsson.interviewtest.commom.data.dto
 
 data class BetDTO(
-    var type: String,
-    var sellIn: Int,
-    var odds: Int,
-    var image: String
+    val type: String,
+    val sellIn: Int,
+    val odds: Int,
+    val image: String
 )
