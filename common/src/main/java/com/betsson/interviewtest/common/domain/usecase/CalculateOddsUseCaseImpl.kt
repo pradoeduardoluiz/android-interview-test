@@ -1,9 +1,11 @@
 package com.betsson.interviewtest.common.domain.usecase
 
 import com.betsson.interviewtest.common.domain.model.BetModel
+import kotlinx.coroutines.delay
 
 class CalculateOddsUseCaseImpl : CalculateOddsUseCase {
     override suspend fun invoke(bets: List<BetModel>): List<BetModel> {
+        delay(LOADING_DELAY) // simulate network delay
         val updatedBets = bets.map { bet ->
             calculateSingleBet(bet = bet)
         }
@@ -74,5 +76,6 @@ class CalculateOddsUseCaseImpl : CalculateOddsUseCase {
         const val SELL_IN_ZERO = 0
         const val SELL_IN_SIX = 6
         const val SELL_IN_ELEVEN = 11
+        const val LOADING_DELAY = 600L
     }
 }

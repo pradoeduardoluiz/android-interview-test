@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.betsson.interviewtest.common.domain.model.BetModel
 import com.betsson.interviewtest.common.domain.usecase.CalculateOddsUseCase
 import com.betsson.interviewtest.common.domain.usecase.GetBetsUseCase
-import kotlinx.coroutines.delay
+import com.betsson.interviewtest.common.util.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +23,6 @@ class BetViewModel(
     override fun getBets() {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
-            delay(LOADING_DELAY)
             runCatching { getBetsUseCase() }
                 .onSuccess { bets ->
                     this@BetViewModel.bets = bets
@@ -36,7 +35,10 @@ class BetViewModel(
                 }
                 .onFailure {
                     updateState {
-                        copy(isLoading = false)
+                        copy(
+                            isLoading = false,
+                            getBetsErrorEvent = Event.NoContent.create()
+                        )
                     }
                 }
         }
@@ -45,7 +47,6 @@ class BetViewModel(
     override fun calculateOdds() {
         viewModelScope.launch {
             updateState { copy(isLoading = true) }
-            delay(LOADING_DELAY)
             runCatching { calculateOddsUseCase(bets = this@BetViewModel.bets) }
                 .onSuccess { updatedBets ->
                     this@BetViewModel.bets = updatedBets
@@ -58,7 +59,10 @@ class BetViewModel(
                 }
                 .onFailure {
                     updateState {
-                        copy(isLoading = false)
+                        copy(
+                            isLoading = false,
+                            calculateBetsErrorEvent = Event.NoContent.create()
+                        )
                     }
                 }
         }
@@ -66,9 +70,5 @@ class BetViewModel(
 
     private suspend fun updateState(handler: suspend BetState.() -> BetState) {
         mutableState.value = handler(mutableState.value)
-    }
-
-    private companion object {
-        const val LOADING_DELAY = 600L
     }
 }

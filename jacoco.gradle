@@ -58,7 +58,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'test') {
                       '**/*_MembersInjector.class',
                       '**/*_Factory*.*',
                       '**/*_Provide*Factory*.*',
-                      '**/*Extensions*.*']
+                      '**/*Extensions*.*',
+                      'com/betsson/interviewtest/common/data/local/*',
+                      'com/betsson/interviewtest/common/util*',
+                      'com/betsson/interviewtest/di/*',
+                      'com/betsson/interviewtest/view/*',
+                      'com/betsson/interviewtest/extensions/*',
+                      'com/betsson/interviewtest/*Application*']
 
     def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

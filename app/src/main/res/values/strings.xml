@@ -3,4 +3,6 @@
     <string name="label_sell_in">Sell in: </string>
     <string name="label_odds">Odds: </string>
     <string name="action_calculate">Calculate</string>
+    <string name="error_get_bets">An error occurred while fetching bets</string>
+    <string name="error_calculate_odds">An error occurred while calculating the odds</string>
 </resources>

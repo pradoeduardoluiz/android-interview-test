@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.betsson.interviewtest.R
 import com.betsson.interviewtest.common.presentation.BetContract
 import com.betsson.interviewtest.common.presentation.BetViewModel
+import com.betsson.interviewtest.common.util.handleEvent
 import com.betsson.interviewtest.databinding.FragmentBetsBinding
 import com.betsson.interviewtest.extensions.isShimmering
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -69,9 +71,21 @@ class BetsFragment : Fragment(R.layout.fragment_bets) {
                     recyclerView.isVisible = !state.isLoading
                     shimmer.isShimmering = state.isLoading
                     adapter.submitList(state.bets)
+                    state.getBetsErrorEvent.handleEvent {
+                        showSnackBarError(msg = getString(R.string.error_get_bets))
+                    }
+                    state.calculateBetsErrorEvent.handleEvent {
+                        showSnackBarError(msg = getString(R.string.error_calculate_odds))
+                    }
                 }
             }
         }
+    }
+
+    private fun showSnackBarError(
+        msg: String
+    ) {
+        Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG).show()
     }
 
 }
