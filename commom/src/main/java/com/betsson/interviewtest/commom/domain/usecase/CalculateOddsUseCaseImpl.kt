@@ -4,57 +4,65 @@ import com.betsson.interviewtest.commom.domain.model.BetModel
 
 class CalculateOddsUseCaseImpl : CalculateOddsUseCase {
     override suspend fun invoke(bets: List<BetModel>): List<BetModel> {
-        for (i in bets.indices) {
-            if (bets[i].type != TOTAL_SCORE && bets[i].type != NUMBER_OF_FOULS) {
-                if (bets[i].odds > ODDS_ZERO) {
-                    if (bets[i].type != FIRST_GOAL_SCORER) {
-                        bets[i].odds = bets[i].odds - 1
-                    }
-                }
-            } else {
-                if (bets[i].odds < ODDS_FIFTY) {
-                    bets[i].odds = bets[i].odds + 1
+        val updatedBets = bets.map { bet ->
+            calculateSingleBet(bet = bet)
+        }
+        return updatedBets.sortedBy { it.sellIn }
+    }
 
-                    if (bets[i].type == NUMBER_OF_FOULS) {
-                        if (bets[i].sellIn < SELL_IN_ELEVEN) {
-                            if (bets[i].odds < ODDS_FIFTY) {
-                                bets[i].odds = bets[i].odds + 1
-                            }
-                        }
+    private fun calculateSingleBet(bet: BetModel): BetModel {
+        var sellIn = bet.sellIn
+        var odds = bet.odds
 
-                        if (bets[i].sellIn < SELL_IN_SIX) {
-                            if (bets[i].odds < ODDS_FIFTY) {
-                                bets[i].odds = bets[i].odds + 1
-                            }
-                        }
-                    }
+        if (bet.type != TOTAL_SCORE && bet.type != NUMBER_OF_FOULS) {
+            if (odds > ODDS_ZERO) {
+                if (bet.type != FIRST_GOAL_SCORER) {
+                    odds -= 1
                 }
             }
+        } else {
+            if (odds < ODDS_FIFTY) {
+                odds += 1
 
-            if (bets[i].type != FIRST_GOAL_SCORER) {
-                bets[i].sellIn = bets[i].sellIn - 1
-            }
-
-            if (bets[i].sellIn < SELL_IN_ZERO) {
-                if (bets[i].type != TOTAL_SCORE) {
-                    if (bets[i].type != NUMBER_OF_FOULS) {
-                        if (bets[i].odds > ODDS_ZERO) {
-                            if (bets[i].type != FIRST_GOAL_SCORER) {
-                                bets[i].odds = bets[i].odds - 1
-                            }
+                if (bet.type == NUMBER_OF_FOULS) {
+                    if (sellIn < SELL_IN_ELEVEN) {
+                        if (odds < ODDS_FIFTY) {
+                            odds += 1
                         }
-                    } else {
-                        bets[i].odds = bets[i].odds - bets[i].odds
                     }
-                } else {
-                    if (bets[i].odds < ODDS_FIFTY) {
-                        bets[i].odds = bets[i].odds + 1
+
+                    if (sellIn < SELL_IN_SIX) {
+                        if (odds < ODDS_FIFTY) {
+                            odds += 1
+                        }
                     }
                 }
             }
         }
 
-        return bets.sortedBy { it.sellIn }
+        if (bet.type != FIRST_GOAL_SCORER) {
+            sellIn -= 1
+        }
+
+        if (sellIn < SELL_IN_ZERO) {
+            if (bet.type != TOTAL_SCORE) {
+                if (bet.type != NUMBER_OF_FOULS) {
+                    if (odds > ODDS_ZERO) {
+                        if (bet.type != FIRST_GOAL_SCORER) {
+                            odds -= 1
+                        }
+                    }
+                } else {
+                    odds = 0
+                }
+            } else {
+                if (odds < ODDS_FIFTY) {
+                    odds += 1
+                }
+            }
+        }
+
+        return bet.copy(sellIn = sellIn, odds = odds)
     }
 
     private companion object {

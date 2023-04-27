@@ -25,9 +25,14 @@ class GetBetsUseCaseImplTest {
     }
 
     @Test
-    fun `should get bets from repository`() = runBlocking {
+    fun `should get bets from repository and order by sell in`() = runBlocking {
 
         val models = listOf(
+            BetModel(type = "ne", sellIn = 5627, odds = 5547, image = "montes"),
+            BetModel(type = "mei", sellIn = 2586, odds = 3343, image = "nunc")
+        )
+
+        val expected = listOf(
             BetModel(type = "mei", sellIn = 2586, odds = 3343, image = "nunc"),
             BetModel(type = "ne", sellIn = 5627, odds = 5547, image = "montes")
         )
@@ -35,7 +40,7 @@ class GetBetsUseCaseImplTest {
         coEvery { repository.getBets() } returns models
 
         val actual = getBetsUseCase()
-        TestCase.assertEquals(actual, models)
+        TestCase.assertEquals(actual, expected)
 
         coVerify(exactly = 1) { repository.getBets() }
         confirmVerified(repository)

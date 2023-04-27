@@ -4,6 +4,7 @@ plugins {
 }
 
 apply from: "../dependencies.gradle"
+apply from: "../jacoco.gradle"
 android {
     namespace 'com.betsson.interviewtest.commom'
     compileSdk 33
@@ -47,4 +48,9 @@ dependencies {
     //region Test Libraries dependencies
     implementation testDependencies.values()
     //endregion
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
 }

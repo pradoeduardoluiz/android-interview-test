@@ -1,0 +1,74 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+android.testOptions {
+    unitTests.all {
+        jacoco {
+            includeNoLocationClasses = true
+        }
+    }
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: 'test') {
+    group = 'Coverage'
+
+    reports {
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/databinding/*Binding.*',
+                      '**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*',
+                      // butterKnife
+                      '**/*$ViewInjector*.*',
+                      '**/*$ViewBinder*.*',
+                      '**/Lambda$*.class',
+                      '**/Lambda.class',
+                      '**/*Lambda.class',
+                      '**/*Lambda*.class',
+                      '**/*_MembersInjector.class',
+                      '**/Dagger*Component*.*',
+                      '**/*Module_*Factory.class',
+                      '**/di/module/*',
+                      '**/*_Factory*.*',
+                      '**/*Module*.*',
+                      '**/*Dagger*.*',
+                      '**/*Hilt*.*',
+                      // kotlin
+                      '**/*MapperImpl*.*',
+                      '**/*$ViewInjector*.*',
+                      '**/*$ViewBinder*.*',
+                      '**/BuildConfig.*',
+                      '**/*Component*.*',
+                      '**/*BR*.*',
+                      '**/Manifest*.*',
+                      '**/*$Lambda$*.*',
+                      '**/*Companion*.*',
+                      '**/*Module*.*',
+                      '**/*Dagger*.*',
+                      '**/*Hilt*.*',
+                      '**/*MembersInjector*.*',
+                      '**/*_MembersInjector.class',
+                      '**/*_Factory*.*',
+                      '**/*_Provide*Factory*.*',
+                      '**/*Extensions*.*']
+
+    def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+    def projectDir = fileTree(dir: project.projectDir, includes: ['**/*.exec'])
+    getSourceDirectories().setFrom(mainSrc)
+    getClassDirectories().setFrom(kotlinClasses)
+    getExecutionData().setFrom(projectDir)
+
+    doLast {
+        print("jacoco report has been generated to file:://${reports.html.destination}/index.html")
+    }
+}
+
