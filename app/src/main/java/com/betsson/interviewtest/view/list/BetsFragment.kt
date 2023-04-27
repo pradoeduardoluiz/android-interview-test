@@ -47,8 +47,12 @@ class BetsFragment : Fragment(R.layout.fragment_bets) {
         _binding = null
     }
 
-    private fun bindInputs() {
-        binding.calculate.setOnClickListener {
+    private fun bindInputs() = with(binding) {
+        swipeRefresh.setOnRefreshListener {
+            viewModel.getBets()
+            swipeRefresh.isRefreshing = false
+        }
+        calculate.setOnClickListener {
             viewModel.calculateOdds()
         }
     }
