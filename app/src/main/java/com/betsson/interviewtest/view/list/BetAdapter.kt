@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import coil.load
-import com.betsson.interviewtest.commom.presentation.BetState
+import com.betsson.interviewtest.common.presentation.BetState
 import com.betsson.interviewtest.databinding.ListItemBinding
 
 class BetAdapter : ListAdapter<BetState.BetViewData, BetAdapter.ViewHolder>(DIFF_CALLBACK) {

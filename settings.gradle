@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "InterviewTest"
 include ':app'
-include ':commom'
+include ':common'

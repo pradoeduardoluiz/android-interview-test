@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.betsson.interviewtest.R
-import com.betsson.interviewtest.commom.presentation.BetContract
-import com.betsson.interviewtest.commom.presentation.BetViewModel
+import com.betsson.interviewtest.common.presentation.BetContract
+import com.betsson.interviewtest.common.presentation.BetViewModel
 import com.betsson.interviewtest.databinding.FragmentBetsBinding
 import com.betsson.interviewtest.extensions.isShimmering
 import kotlinx.coroutines.launch
