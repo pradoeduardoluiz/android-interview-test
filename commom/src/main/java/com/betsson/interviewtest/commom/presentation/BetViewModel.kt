@@ -48,6 +48,7 @@ class BetViewModel(
             delay(LOADING_DELAY)
             runCatching { calculateOddsUseCase(bets = this@BetViewModel.bets) }
                 .onSuccess { updatedBets ->
+                    this@BetViewModel.bets = updatedBets
                     updateState {
                         copy(
                             isLoading = false,
