@@ -7,64 +7,99 @@ class CalculateOddsUseCaseImpl : CalculateOddsUseCase {
     override suspend fun invoke(bets: List<BetModel>): List<BetModel> {
         delay(LOADING_DELAY) // simulate network delay
         val updatedBets = bets.map { bet ->
-            calculateSingleBet(bet = bet)
+            calculateOddsAndSellIn(bet = bet)
         }
         return updatedBets.sortedBy { it.sellIn }
     }
 
-    private fun calculateSingleBet(bet: BetModel): BetModel {
+    private fun calculateOddsAndSellIn(bet: BetModel): BetModel {
         var sellIn = bet.sellIn
         var odds = bet.odds
+        odds = calculateOdds(bet, odds, sellIn)
+        sellIn = decrementSellInWhenTypeIsNotFirstGoalScorer(bet, sellIn)
+        odds = calculateWhenSellInLessThanZero(sellIn, bet, odds)
+        return bet.copy(sellIn = sellIn, odds = odds)
+    }
 
+    private fun calculateOdds(
+        bet: BetModel,
+        odds: Int,
+        sellIn: Int
+    ): Int {
+        var updateOdds = odds
         if (bet.type != TOTAL_SCORE && bet.type != NUMBER_OF_FOULS) {
-            if (odds > ODDS_ZERO) {
-                if (bet.type != FIRST_GOAL_SCORER) {
-                    odds -= 1
-                }
+            if (updateOdds > ODDS_ZERO && bet.type != FIRST_GOAL_SCORER) {
+                updateOdds -= 1
             }
         } else {
-            if (odds < ODDS_FIFTY) {
-                odds += 1
-
-                if (bet.type == NUMBER_OF_FOULS) {
-                    if (sellIn < SELL_IN_ELEVEN) {
-                        if (odds < ODDS_FIFTY) {
-                            odds += 1
-                        }
-                    }
-
-                    if (sellIn < SELL_IN_SIX) {
-                        if (odds < ODDS_FIFTY) {
-                            odds += 1
-                        }
-                    }
-                }
+            if (updateOdds < ODDS_FIFTY) {
+                updateOdds += 1
+                updateOdds = calculateWhenTypeIsNumberOfFouls(bet, sellIn, updateOdds)
             }
         }
+        return updateOdds
+    }
 
-        if (bet.type != FIRST_GOAL_SCORER) {
-            sellIn -= 1
+    private fun calculateWhenTypeIsNumberOfFouls(
+        bet: BetModel,
+        sellIn: Int,
+        odds: Int
+    ): Int {
+        var updateOdds = odds
+        if (bet.type == NUMBER_OF_FOULS && updateOdds < ODDS_FIFTY) {
+            if (sellIn < SELL_IN_ELEVEN) {
+                updateOdds += 1
+            }
+
+            if (sellIn < SELL_IN_SIX) {
+                updateOdds += 1
+            }
         }
+        return updateOdds
+    }
 
+    private fun decrementSellInWhenTypeIsNotFirstGoalScorer(
+        bet: BetModel,
+        sellIn: Int
+    ): Int {
+        var updateSellIn = sellIn
+        if (bet.type != FIRST_GOAL_SCORER) {
+            updateSellIn -= 1
+        }
+        return updateSellIn
+    }
+
+    private fun calculateWhenSellInLessThanZero(
+        sellIn: Int,
+        bet: BetModel,
+        odds: Int
+    ): Int {
+        var updateOdds = odds
         if (sellIn < SELL_IN_ZERO) {
             if (bet.type != TOTAL_SCORE) {
-                if (bet.type != NUMBER_OF_FOULS) {
-                    if (odds > ODDS_ZERO) {
-                        if (bet.type != FIRST_GOAL_SCORER) {
-                            odds -= 1
-                        }
-                    }
-                } else {
-                    odds = 0
-                }
+                updateOdds = calculateWhenTypeIsNotNumberOfFouls(bet, updateOdds)
             } else {
-                if (odds < ODDS_FIFTY) {
-                    odds += 1
+                if (updateOdds < ODDS_FIFTY) {
+                    updateOdds += 1
                 }
             }
         }
+        return updateOdds
+    }
 
-        return bet.copy(sellIn = sellIn, odds = odds)
+    private fun calculateWhenTypeIsNotNumberOfFouls(
+        bet: BetModel,
+        odds: Int
+    ): Int {
+        var odds1 = odds
+        if (bet.type != NUMBER_OF_FOULS) {
+            if (odds1 > ODDS_ZERO && bet.type != FIRST_GOAL_SCORER) {
+                odds1 -= 1
+            }
+        } else {
+            odds1 = 0
+        }
+        return odds1
     }
 
     private companion object {
